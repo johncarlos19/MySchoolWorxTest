@@ -30,6 +30,34 @@ class ShirtType(DjangoObjectType):
 
 
 
+
+class UpdateCar(graphene.Mutation):
+    class Arguments:
+        id = graphene.Int()
+        brand = graphene.String()
+        model = graphene.String()
+        color = graphene.String()
+        year = graphene.Int()
+
+    statu = graphene.String()
+    car = graphene.Field(lambda: CarType)
+
+    def mutate(self, info, id, brand, model, color, year):
+        if id is not None:
+            car = Car.objects.get(id=id)
+            car.color = color
+            car.brand = brand
+            car.model = model
+            car.year = year
+            car.save()
+            statu = "Updated"
+            return UpdateCar(car=car, statu=statu)
+        else:
+            return UpdateCar(car=None, statu="Error")
+
+
+
+
 class CreateCar(graphene.Mutation):
     class Arguments:
         brand = graphene.String()
@@ -60,8 +88,31 @@ class CreateShirt(graphene.Mutation):
         shirt = Shirt(color=color, lenght=lenght, size=size, typename="Shirt")
         shirt.save()
         statu = "Created"
-        return CreateCar(shirt=shirt, statu=statu)
+        return CreateShirt(shirt=shirt, statu=statu)
 
+
+
+class UpdateShirt(graphene.Mutation):
+    class Arguments:
+        id = graphene.Int()
+        lenght = graphene.String()
+        color = graphene.String()
+        size = graphene.Float()
+
+    statu = graphene.String()
+    shirt = graphene.Field(lambda: ShirtType)
+
+    def mutate(self, info, id, lenght, color, size):
+        if id is not None:
+            shirt = Shirt.objects.get(id=id)
+            shirt.color = color
+            shirt.lenght = lenght
+            shirt.size = size
+            shirt.save()
+            statu = "Updated"
+            return UpdateShirt(shirt=shirt, statu=statu)
+        else:
+            return UpdateShirt(shirt=None, statu="Error")
 
 
 
@@ -98,7 +149,9 @@ class Query(graphene.ObjectType):
 
 class Mutation(graphene.ObjectType):
     create_car = CreateCar.Field()
+    update_car = UpdateCar.Field()
     create_shirt = CreateShirt.Field()
+    update_shirt = UpdateShirt.Field()
 
 
 
