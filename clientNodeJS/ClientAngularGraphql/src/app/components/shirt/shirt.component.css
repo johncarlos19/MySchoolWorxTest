@@ -1,0 +1,10 @@
+table {
+  width: 100%;
+}
+td{
+  width: 20%;
+}
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
