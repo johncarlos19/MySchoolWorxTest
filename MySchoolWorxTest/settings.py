@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'website',
     'graphene_django',
-    "corsheaders",
+    "corsheaders", #the library to modified CORS on header
 
 
 ]
@@ -56,9 +56,12 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
 
 ]
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:4200',
-]
+
+# Permit all origin to connect the server
+CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:4200',
+# ]
 
 ROOT_URLCONF = 'MySchoolWorxTest.urls'
 

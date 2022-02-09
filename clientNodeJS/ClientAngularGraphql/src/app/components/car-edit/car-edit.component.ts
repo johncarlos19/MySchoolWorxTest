@@ -23,7 +23,7 @@ const query = gql`
       year
       color
     }
-}`
+  }`
 
 @Component({
   selector: 'app-car-edit',
@@ -33,10 +33,10 @@ const query = gql`
 export class CarEditComponent implements OnInit {
   form: FormGroup;
   sb: MatSnackBar;
-  id: string ='';
-  action: string='';
+  id: string = '';
+  action: string = '';
 
-  constructor(private router: Router,private route: ActivatedRoute, private fb: FormBuilder, private _sb: MatSnackBar) {
+  constructor(private router: Router, private route: ActivatedRoute, private fb: FormBuilder, private _sb: MatSnackBar) {
     this.form = this.fb.group({
       brand: ['', Validators.required],
       year: ['', Validators.required],
@@ -55,28 +55,26 @@ export class CarEditComponent implements OnInit {
 
   ngOnInit(): void {
     try {
-      if (this.id !== null){
+      if (this.id !== null) {
         const variables = {
-        id: parseInt(this.id)
+          id: parseInt(this.id)
+        }
+        console.log(variables)
+        request(endpoint, query, variables).then((data) => {
+
+          console.log(data)
+          this.form = this.fb.group({
+            brand: [data.getCar.brand, Validators.required],
+            year: [data.getCar.year, Validators.required],
+            model: [data.getCar.model, Validators.required],
+            color: [data.getCar.color, Validators.required]
+          })
+
+          this.sb.open(data.updateCar.statu, "Close");
+        }).then(() => {
+          this.router.navigateByUrl('/' + this.action);
+        })
       }
-      console.log(variables)
-      request(endpoint, query, variables).then((data) => {
-
-        console.log(data)
-        this.form = this.fb.group({
-      brand: [data.getCar.brand, Validators.required],
-      year: [data.getCar.year, Validators.required],
-      model: [data.getCar.model, Validators.required],
-      color: [data.getCar.color, Validators.required]
-    })
-
-        this.sb.open(data.updateCar.statu, "Close");
-      }).then(() => {
-        this.router.navigateByUrl('/'+this.action);
-      })
-      }
-
-
 
 
     } catch (error) {
@@ -86,9 +84,10 @@ export class CarEditComponent implements OnInit {
     }
   }
 
-  cancel(){
-    this.router.navigateByUrl('/'+this.action);
+  cancel() {
+    this.router.navigateByUrl('/' + this.action);
   }
+
   edit() {
 
     try {
@@ -107,7 +106,7 @@ export class CarEditComponent implements OnInit {
 
         this.sb.open(data.updateCar.statu, "Close");
       }).then(() => {
-        this.router.navigateByUrl('/'+this.action);
+        this.router.navigateByUrl('/' + this.action);
       })
 
     } catch (error) {

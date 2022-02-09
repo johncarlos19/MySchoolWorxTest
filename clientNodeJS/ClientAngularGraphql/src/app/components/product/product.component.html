@@ -1,1 +1,72 @@
 <app-nav-bar></app-nav-bar>
+
+
+<div class="container">
+  <mat-toolbar>
+    <h1>Product List</h1>
+
+  </mat-toolbar>
+  <br>
+
+
+  <mat-form-field appearance="standard">
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+  </mat-form-field>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- Position Column -->
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> ID</th>
+      <td mat-cell *matCellDef="let element">
+        {{element.id}}
+      </td>
+    </ng-container>
+
+    <!-- lenght Column -->
+    <ng-container matColumnDef="typename">
+      <th mat-header-cell *matHeaderCellDef> Product Name</th>
+      <td mat-cell *matCellDef="let element"> {{element.typename}} </td>
+    </ng-container>
+
+    <!-- Size Column -->
+    <ng-container matColumnDef="field">
+      <th mat-header-cell *matHeaderCellDef> Field</th>
+      <td mat-cell *matCellDef="let element">
+        <ng-container *ngIf="element.typename == 'Car'">
+          Brand: {{element.car.brand}} Model: {{element.car.model}} Year: {{element.car.year}} Color: {{element.car.color}}
+        </ng-container>
+        <ng-container *ngIf="element.typename == 'Shirt'">
+          Lenght: {{element.shirt.lenght}} Size: {{element.shirt.size}} Color: {{element.shirt.color}}
+        </ng-container> </td>
+    </ng-container>
+
+
+    <!-- model Column -->
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let element">
+        <div class="example-button-container">
+          <button mat-fab color="primary" type="button" (click)="edit(element.typename, element.id,'product')"
+                  aria-label="Edit" matTooltip="Edit Product">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+
+
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+  </mat-paginator>
+</div>
